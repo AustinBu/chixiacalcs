@@ -1,46 +1,65 @@
-import multipliers as mp
 from buff import *
 from chixia import *
+import random
+import numpy as np
+from multiplier import *
 
-wife = Chixia(90, 1000, 0.73, 1.72)
-res_multiplier = 0
+def calc_damage(wife, combo, hits = [], simulate=False):
+    total_damage = 0
+    for i in range(len(combo)):
+        multiplier, split = calc_with_split(combo[i], hits[i])
+        total_buff = calc_buffs(wife,
+                                combo[i][-1])
+        crit_multiplier = 1
+        if simulate:
+            crit_percent = np.sum(np.multiply(split, crit_simulate(wife, combo[i])))
+            crit_multiplier += (crit_percent * wife.crit_damage) / multiplier
+        else:
+            crit_multiplier = wife.crit_multiplier
 
-def calc_damage(multiplier):
-    all_type_buff = 0
-    for buff in wife.damage_multipliers:
-        if buff.type == DamageType.ALL:
-            all_type_buff += buff.amount
-    return round(multiplier/100 
+        total_damage += int(multiplier/100
                  * wife.attack 
-                 * (1 + (wife.crit_rate * wife.crit_damage))
-                 * (1 + all_type_buff), 
-                3)
+                 * crit_multiplier 
+                 * (1 + total_buff))
+    return total_damage
 
-def calc_basic_combo(level):
-    multiplier = mp.basic_combo(level)/100
-    total_buff = 0
-    total_buff += wife.total_multipliers[DamageType.ALL.value]
-    total_buff += wife.total_multipliers[DamageType.ELEMENTAL.value]
-    total_buff += wife.total_multipliers[DamageType.BASIC.value]
+def crit_simulate(wife, attack):
+    crit_ratio = []
+
+    for i in attack[0]:
+        crit_ratio.append(0)
+        for _ in range(i):
+            if random.random() < wife.crit_rate:
+                crit_ratio[-1] += 1
+        crit_ratio[-1] /= i
+    return crit_ratio
+
+def calc_basic_combo(wife, mp):
+    multiplier = mp.basic_combo()/100
+    total_buff = calc_buffs(wife,
+                            [DamageType.FUSION, 
+                            DamageType.BASIC])
     return int(multiplier 
                  * wife.attack 
                  * wife.crit_multiplier 
                  * (1 + total_buff))
 
-def calc_forte_combo(level, hits):
-    multiplier = mp.forte_combo(level, hits)/100
-    total_buff = 0
-    total_buff += wife.total_multipliers[DamageType.ALL.value]
-    total_buff += wife.total_multipliers[DamageType.ELEMENTAL.value]
-    total_buff += wife.total_multipliers[DamageType.SKILL.value]
+def calc_forte_combo(wife, mp, hits):
+    multiplier = mp.forte_combo(hits)/100
+    total_buff = calc_buffs(wife,
+                            [DamageType.FUSION, 
+                            DamageType.SKILL])
     return int(multiplier 
                  * wife.attack 
                  * wife.crit_multiplier 
                  * (1 + total_buff))
 
-def add_multiplier(amount, type):
+def calc_buffs(wife, types):
+    total_buff = 0
+    total_buff += wife.total_multipliers[DamageType.ALL.value]
+    for type in types:
+        total_buff += wife.total_multipliers[type.value]
+    return total_buff
+
+def add_multiplier(wife, amount, type):
     wife.add_buff(Buff(amount, type))
-
-add_multiplier(0.15, DamageType.ALL)
-print(calc_basic_combo(0))
-print(calc_forte_combo(0, 30))
