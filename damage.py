@@ -37,8 +37,8 @@ def crit_simulate(wife, attack):
 def calc_basic_combo(wife, mp):
     multiplier = mp.basic_combo()/100
     total_buff = calc_buffs(wife,
-                            [DamageType.FUSION, 
-                            DamageType.BASIC])
+                            [BuffType.FUSION, 
+                            BuffType.BASIC])
     return int(multiplier 
                  * wife.attack 
                  * wife.crit_multiplier 
@@ -47,8 +47,8 @@ def calc_basic_combo(wife, mp):
 def calc_forte_combo(wife, mp, hits):
     multiplier = mp.forte_combo(hits)/100
     total_buff = calc_buffs(wife,
-                            [DamageType.FUSION, 
-                            DamageType.SKILL])
+                            [BuffType.FUSION, 
+                            BuffType.SKILL])
     return int(multiplier 
                  * wife.attack 
                  * wife.crit_multiplier 
@@ -56,7 +56,7 @@ def calc_forte_combo(wife, mp, hits):
 
 def calc_buffs(wife, types):
     total_buff = 0
-    total_buff += wife.total_multipliers[DamageType.ALL.value]
+    total_buff += wife.total_multipliers[BuffType.ALL.value]
     for type in types:
         total_buff += wife.total_multipliers[type.value]
     return total_buff

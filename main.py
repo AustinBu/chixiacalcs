@@ -3,14 +3,14 @@ from damage import *
 from multiplier import Multiplier
 
 wife = Chixia(90, 887, 1851, 0.734, 1.678)
-wife.add_buff(Buff("Echo", 0.086, DamageType.SKILL))
-wife.add_buff(Buff("Echo", 0.323, DamageType.BASIC))
-wife.add_buff(Buff("Echo", 0.079, DamageType.HEAVY))
-wife.add_buff(Buff("Echo", 0.116, DamageType.ULT))
-wife.add_buff(Buff("Echo", 0.323, DamageType.BASIC))
-wife.add_buff(Buff("Echo", 0.82, DamageType.FUSION))
+wife.add_buff(Buff("Echo", 0.086, BuffType.SKILL))
+wife.add_buff(Buff("Echo", 0.323, BuffType.BASIC))
+wife.add_buff(Buff("Echo", 0.079, BuffType.HEAVY))
+wife.add_buff(Buff("Echo", 0.116, BuffType.ULT))
+wife.add_buff(Buff("Echo", 0.323, BuffType.BASIC))
+wife.add_buff(Buff("Echo", 0.82, BuffType.FUSION))
 
-wife.add_buff(Buff("Verina", 0.15, DamageType.ALL))
+wife.add_buff(Buff("Verina", 0.15, BuffType.ALL))
 
 # print("-")
 # print(calc_basic_combo(wife, 0))

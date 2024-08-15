@@ -1,4 +1,4 @@
-from buff import DamageType
+from buff import BuffType
 
 class Chixia(object):
     level = 0
@@ -30,7 +30,7 @@ class Chixia(object):
         self.crit_rate = crit_rate
         self.crit_damage = crit_damage
         self.crit_multiplier = 1 + (self.crit_rate * self.crit_damage)
-        for _ in range(len(DamageType)):
+        for _ in range(len(BuffType)):
             self.total_multipliers.append(0)
 
     def set_level(self, level):

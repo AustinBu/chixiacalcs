@@ -1,6 +1,6 @@
 from enum import Enum
 
-class DamageType(Enum):
+class BuffType(Enum):
     ALL = 0
     BASIC = 1
     HEAVY = 2
