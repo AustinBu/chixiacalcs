@@ -1,7 +1,7 @@
 from enum import Enum
 
 class BuffType(Enum):
-    ALL = 0
+    DEEPEN = 0
     BASIC = 1
     HEAVY = 2
     SKILL = 3
@@ -19,8 +19,10 @@ class Buff(object):
     name = ""
     amount = 0
     type = 0
+    length = 0 # in seconds
 
-    def __init__(self, name, amount, type):
+    def __init__(self, name, amount, type, length=0):
         self.name = name
         self.amount = amount
         self.type = type
+        self.length = length
